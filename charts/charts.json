@@ -1,0 +1,35 @@
+[
+  {
+    "csv": "data/figure-2-2_caliber-share.csv",
+    "title": "Ring of Fire share of total U.S. pistol production, by caliber, 1992",
+    "subtitle": "Source: Wintemute, Ring of Fire (1994), Figure 2-2",
+    "ylabel": "Share of U.S. pistol production (%)",
+    "ymax": 100,
+    "type": "column",
+    "out": "out/figure-2-2.html"
+  },
+  {
+    "csv": "data/figure-2-4_relative-stopping-power.csv",
+    "title": "Relative Stopping Power for ammunition commonly used in Ring of Fire handguns",
+    "subtitle": "Source: Wintemute, Ring of Fire (1994), Figure 2-4",
+    "ylabel": "Relative Stopping Power (unitless)",
+    "type": "column",
+    "out": "out/figure-2-4.html"
+  },
+  {
+    "csv": "data/figure-1-1_1992-production.csv",
+    "title": "Ring of Fire handgun production by company, 1992",
+    "subtitle": "Source: Wintemute, Ring of Fire (1994), Figure 1-1 (Jennings-related firms)",
+    "ylabel": "Handguns produced in 1992",
+    "type": "column",
+    "out": "out/figure-1-1.html"
+  },
+  {
+    "csv": "data/table-4-2_tracing-vs-production.csv",
+    "title": "Handgun tracing requests vs. production, by manufacturer",
+    "subtitle": "Source: Wintemute, Ring of Fire (1994), Table 4-2",
+    "ylabel": "Number of handguns",
+    "type": "column",
+    "out": "out/table-4-2.html"
+  }
+]

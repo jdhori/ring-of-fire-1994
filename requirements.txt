@@ -1,0 +1,16 @@
+# Document build (scripts/build_html.py)
+markdown>=3.5
+
+# Accessible PDF export (scripts/build_pdf.py): HTML -> tagged PDF/UA-1.
+# Needs system Pango/cairo/gdk-pixbuf (already present on most Linux installs).
+weasyprint>=63
+
+# Static vector chart fallbacks embedded into the HTML/PDF editions
+# (charts/generate_static.py): browserless SVG export for the 4 data charts.
+altair>=5.2
+vl-convert-python>=1.0
+pandas>=2.0
+
+# Plotly comparison artifacts (optional). Static PDF/PNG export additionally
+# needs a headless Chrome via `plotly_get_chrome` (kaleido) — see CLAUDE.md.
+plotly>=5.20

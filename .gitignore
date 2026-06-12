@@ -1,0 +1,21 @@
+work/            # regenerated page renders + OCR (large; derived from source PDF)
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+charts/out/*.html
+!charts/out/.gitkeep
+
+# Original scanned source — reference only, not needed to build the editions,
+# and kept out to avoid redistributing the full copyrighted 1994 scan.
+source/
+
+# Library comparison artifacts (the 5-way experiment; not needed to build the editions)
+charts/comparison/
+
+# OS / editor cruft
+.DS_Store
+*.swp
+
+# Local harness/preview config (not needed to build)
+.claude/

@@ -1,0 +1,15 @@
+flowchart LR
+  accTitle: The Ring of Fire family tree
+  accDescr: Five handgun companies trace back to Raven Arms, founded by George Jennings in 1970. Lorcin Engineering was founded by Jim Waldorf in 1989; Davis Industries by George's daughter Gail and her husband Jim Davis in 1982; Phoenix Arms succeeded Raven after a 1991 fire; Bryco Arms descends from Jennings Firearms, founded by Bruce Jennings in 1978, by way of Calwestco; and Sundance Industries by George's nephew in 1989. 1992 production totals Bryco 204883, Davis 187779, Lorcin 187761, Phoenix 67824, Sundance 17757.
+  R["<b>Raven Arms</b><br/>George Jennings, 1970"]
+  R --> L["<b>Lorcin Engineering</b><br/>Jim Waldorf, 1989"] --> L92(["187,761 guns in 1992"])
+  R --> D["<b>Davis Industries</b><br/>Gail &amp; Jim Davis, 1982"] --> D92(["187,779 guns in 1992"])
+  R -. "Raven destroyed by fire, 1991" .-> P["<b>Phoenix Arms</b>"] --> P92(["67,824 guns in 1992"])
+  R --> J["<b>Jennings Firearms</b><br/>Bruce Jennings, 1978"] -->|"replaced by Calwestco, 1985-1990"| B["<b>Bryco Arms</b>"] --> B92(["204,883 guns in 1992"])
+  R --> S["<b>Sundance Industries</b><br/>George's nephew, 1989"] --> S92(["17,757 guns in 1992"])
+  classDef total fill:#f6f4f1,stroke:#7a1f1f,stroke-width:2px,color:#1a1a1a;
+  classDef firm fill:#fff,stroke:#333,stroke-width:1px,color:#1a1a1a;
+  classDef root fill:#7a1f1f,stroke:#7a1f1f,color:#fff;
+  class R root;
+  class L,D,P,J,B,S firm;
+  class L92,D92,P92,B92,S92 total;
