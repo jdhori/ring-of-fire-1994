@@ -4,15 +4,36 @@ A faithful, accessible, modern digital edition of *Ring of Fire: The Handgun Mak
 Southern California* (Garen J. Wintemute, UC Davis Violence Prevention Research Program,
 1994), rebuilt from a 112-page print-locked scanned PDF.
 
+## Download
+
+Grab a ready-to-read edition from the [latest release](https://github.com/jdhori/ring-of-fire-1994/releases/latest):
+
+- **`Ring-of-Fire-1994.pdf`** — tagged, accessible PDF/UA-1 (one-click download; no build needed).
+- **`Ring-of-Fire-1994.html`** — single self-contained accessible HTML (opens offline in any browser).
+- **`Ring-of-Fire-1994-markdown.zip`** — the Markdown plus its `images/` for conversion with Pandoc.
+
+In the HTML edition each figure leads with its accessible form (clean caption / data table /
+interactive chart / vector diagram). The original 1994 scan sits in a collapsible "Show the
+original 1994 scan of Figure X-X" accordion above its descriptive caption, and every figure's
+data table is a matching "Show the data table for Figure X-X" accordion — expand either to
+verify. Each accessible chart and the family-tree diagram name the figure they make accessible
+(e.g. "Figure 1-1 — accessible chart"). In the PDF the scans and tables are always shown (the
+accordions are print-expanded), so nothing is lost.
+
 ## What's here
 
 - **`document/Ring-of-Fire-1994.md`** — clean Markdown of the full report (generated from
   the section files in `build/`). Convert with Pandoc to docx/EPUB/etc.
 - **`document/Ring-of-Fire-1994.html`** — a single self-contained, accessible HTML edition:
-  every image embedded, `<figure>`/`<figcaption>` with descriptive alt text, real tables,
-  `lang`, skip link, the Relative Stopping Power formula exposed to assistive tech, and four
+  every original scan tucked into a collapsible "Show the original 1994 scan" accordion above
+  its caption (the descriptive caption stays visible; the historic image expands on demand for
+  verification), each figure's data table in a matching "Show the data table" accordion,
+  `<figure>`/`<figcaption>` with descriptive alt text, real tables,
+  `lang`, skip link, the Relative Stopping Power formula exposed to assistive tech, four
   exact-data charts embedded inline as interactive Highcharts (keyboard nav + sonification +
-  data table).
+  data table), and the Figure 1-1 family tree as a clean accessible Mermaid vector diagram
+  (inline SVG with native text, a long-text description, and the data table alongside it). Each
+  accessible chart/diagram names the figure it makes accessible.
 - **`document/Ring-of-Fire-1994.pdf`** — a tagged, accessible **PDF/UA-1** edition rendered
   from the HTML (WeasyPrint): full tag tree, heading/table structure, per-figure `/Alt`
   text, `/Lang`, displayed document title, and PDF outline bookmarks. The interactive charts
@@ -36,10 +57,15 @@ make export    # all three in one pass
 
 make charts        # generate every standalone chart in charts/charts.json into charts/out/
 make charts-static # regenerate the static SVG fallbacks embedded in the HTML/PDF editions
+make diagrams      # render the Mermaid diagrams (Figure 1-1 family tree) to PDF-safe SVG
 ```
 
-`make html` and `make pdf` rebuild the static chart fallbacks first, so the embedded charts
-always reflect the CSVs in `charts/data/`.
+`make html` and `make pdf` rebuild the static chart fallbacks and the Mermaid diagrams first,
+so the embedded figures always reflect the CSVs in `charts/data/` and `charts/*.mmd`.
+
+`make diagrams` needs `mmdc` (mermaid-cli, an npm package) plus a headless Chromium; if either
+is missing it skips rendering and the already-committed `charts/static/*.svg` is used, so plain
+`make html`/`make pdf` still works offline. See `charts/render_diagrams.py`.
 
 `make doc` remains as a back-compat alias for `make html`.
 
@@ -69,3 +95,7 @@ and accessibility (WCAG 2.2 AA) is a hard requirement on every deliverable.
   `<!--CHART id-->` tokens in the `build/` sources. Each is shown three ways — interactive
   chart, sonification, and a real data table — so the same data is available on screen, in the
   tagged PDF, and with scripting disabled. See the Charts section of `CLAUDE.md` to add more.
+- The Figure 1-1 family tree is also rendered from `charts/family-tree.mmd` (Mermaid) into a
+  PDF-safe SVG via a `<!--MERMAID id-->` token, alongside the kept original scan and the data
+  table. The render config sets root-level `"htmlLabels": false` so the SVG uses native `<text>`
+  (not `<foreignObject>`, which WeasyPrint cannot draw) — the labels stay legible in the PDF.

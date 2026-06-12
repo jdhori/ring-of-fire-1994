@@ -1,15 +1,28 @@
 flowchart LR
   accTitle: The Ring of Fire family tree
   accDescr: Five handgun companies trace back to Raven Arms, founded by George Jennings in 1970. Lorcin Engineering was founded by Jim Waldorf in 1989; Davis Industries by George's daughter Gail and her husband Jim Davis in 1982; Phoenix Arms succeeded Raven after a 1991 fire; Bryco Arms descends from Jennings Firearms, founded by Bruce Jennings in 1978, by way of Calwestco; and Sundance Industries by George's nephew in 1989. 1992 production totals Bryco 204883, Davis 187779, Lorcin 187761, Phoenix 67824, Sundance 17757.
-  R["<b>Raven Arms</b><br/>George Jennings, 1970"]
-  R --> L["<b>Lorcin Engineering</b><br/>Jim Waldorf, 1989"] --> L92(["187,761 guns in 1992"])
-  R --> D["<b>Davis Industries</b><br/>Gail &amp; Jim Davis, 1982"] --> D92(["187,779 guns in 1992"])
-  R -. "Raven destroyed by fire, 1991" .-> P["<b>Phoenix Arms</b>"] --> P92(["67,824 guns in 1992"])
-  R --> J["<b>Jennings Firearms</b><br/>Bruce Jennings, 1978"] -->|"replaced by Calwestco, 1985-1990"| B["<b>Bryco Arms</b>"] --> B92(["204,883 guns in 1992"])
-  R --> S["<b>Sundance Industries</b><br/>George's nephew, 1989"] --> S92(["17,757 guns in 1992"])
-  classDef total fill:#f6f4f1,stroke:#7a1f1f,stroke-width:2px,color:#1a1a1a;
-  classDef firm fill:#fff,stroke:#333,stroke-width:1px,color:#1a1a1a;
-  classDef root fill:#7a1f1f,stroke:#7a1f1f,color:#fff;
-  class R root;
-  class L,D,P,J,B,S firm;
-  class L92,D92,P92,B92,S92 total;
+  R["Raven Arms<br/>George Jennings, 1970"]
+  R --> Lm["Lorcin Engineering<br/>Jim Waldorf, 1989"] --> Lg["Lorcin Engineering<br/>187,761 guns in 1992"]
+  R --> Dm["Davis Industries<br/>Gail and Jim Davis, 1982"] --> Dg["Davis Industries<br/>187,779 guns in 1992"]
+  R --> FIRE(["Raven destroyed by fire, 1991"]) --> Pg["Phoenix Arms<br/>67,824 guns in 1992"]
+  R --> Jm["Jennings Firearms<br/>Bruce Jennings, 1978"] --> CAL(["replaced by Calwestco, 1985-1990"]) --> Bg["Bryco Arms<br/>204,883 guns in 1992"]
+  R --> Sm["Sundance Industries<br/>George's nephew, 1989"] --> Sg["Sundance Industries<br/>17,757 guns in 1992"]
+  %% NOTE: classDefs deliberately set NO `color:` — under flowchart htmlLabels:false,
+  %% a per-class color property makes multi-row label text render invisibly (a Mermaid 11
+  %% rendering bug), so label color is left to the theme default (dark #1a1a1a). The origin
+  %% node is distinguished by a pale-red fill + thick accent border, keeping dark text legible.
+  %% Layout mirrors the original Figure 1-1: an origin box (Raven), a middle column of
+  %% "origin company" rectangles (name + founder/year), and a right column of "became"
+  %% rectangles (final company name + 1992 production). The two transitional events sit
+  %% between the columns as ovals (stadium nodes). Phoenix has no middle box — Raven leads
+  %% to it through the fire event, exactly as in the scan.
+  %% CRITICAL: do NOT name a classDef `root`. Mermaid wraps the whole graph in
+  %% `<g class="root">`, so a classDef called `root` emits `.root path{fill:...!important}`
+  %% that paints EVERY edge path (which live inside that wrapper) with the node fill — it
+  %% reads as a pale "shadow" wedge under each diagonal arrow. The origin node uses `origin`.
+  classDef note fill:#f6f4f1,stroke:#7a1f1f,stroke-width:2px;
+  classDef firm fill:#ffffff,stroke:#333333,stroke-width:1px;
+  classDef origin fill:#fbeaea,stroke:#7a1f1f,stroke-width:3px;
+  class R origin;
+  class Lm,Dm,Jm,Sm,Lg,Dg,Pg,Bg,Sg firm;
+  class FIRE,CAL note;

@@ -79,6 +79,9 @@ ring-of-fire/
 │   ├── out/                  # generated chart HTML (gitignored except .gitkeep)
 │   ├── static/              # generated static SVG fallbacks (one per data chart)
 │   ├── comparison/           # the 5-way library comparison (see "Charts" below)
+│   ├── render_diagrams.py    # Mermaid (.mmd) -> PDF-safe SVG via mmdc (see "Diagrams")
+│   ├── mermaid.config.json   # mmdc render config (root-level htmlLabels:false — REQUIRED)
+│   ├── puppeteer.config.json # headless-Chromium launch args for mmdc (--no-sandbox)
 │   └── family-tree.mmd       # Mermaid source for Figure 1-1
 └── scripts/
     ├── assemble.py           # build/*.md  -> document/Ring-of-Fire-1994.md
@@ -102,10 +105,11 @@ make pdf         # -> tagged accessible PDF/UA-1 (built from the HTML)
 make export     # build md + html + pdf in one pass
 make charts     # regenerate every standalone chart in charts/charts.json into charts/out/
 make charts-static  # regenerate the static SVG fallbacks (charts/static/) embedded in HTML/PDF
+make diagrams   # render the Mermaid diagrams (Figure 1-1 family tree) to PDF-safe SVG
 ```
 
-`make html` and `make pdf` depend on `charts-static`, so the embedded chart figures are
-always rebuilt from the CSVs before each edition.
+`make html` and `make pdf` depend on `charts-static` and `diagrams`, so the embedded chart
+figures and the Mermaid diagram(s) are always rebuilt before each edition.
 
 Each format target re-runs `assemble.py` first, so a single `make pdf`/`make html`/`make md`
 always reflects the current `build/` sources. **Never edit `document/Ring-of-Fire-1994.md`
@@ -172,6 +176,38 @@ share), **Figure 2-4** (relative stopping power), and **Table 4-2** (tracing vs 
 - **To embed another chart:** add its CSV + a `charts.json` entry, run `make charts-static`,
   then drop a `<!--CHART that-id-->` token after its caption in the relevant `build/` file.
 
+### Diagrams — the Mermaid `<!--MERMAID id-->` pipeline (Figure 1-1 family tree)
+
+The Figure 1-1 family tree is a *workflow/relationship* diagram, not tabular data, so it is
+authored as Mermaid (`charts/family-tree.mmd`) and rendered to a PDF-safe SVG. It is embedded
+**next to** (never replacing) the faithful cropped scan and the data table.
+
+- **Placement = an HTML comment token** in the `build/` source: `<!--MERMAID family-tree-->`
+  on its own line (in `build/01-snsfamily.md`, after the table, before the `<!--CHART-->`).
+  Invisible in the Markdown deliverable; expanded only by `build_html.py`. The token `id` is
+  the `.mmd`/`.svg` filename stem.
+- **Render: `make diagrams` → `charts/render_diagrams.py`** runs `mmdc` (mermaid-cli) with
+  `charts/mermaid.config.json` + `charts/puppeteer.config.json`, writing `charts/static/family-tree.svg`.
+  `mmdc` is an **npm** package (not pip): `npm i -g @mermaid-js/mermaid-cli`, and it needs a
+  headless Chromium (e.g. `npx puppeteer browsers install chrome-headless-shell`). The script
+  locates Chrome via `PUPPETEER_EXECUTABLE_PATH` → `~/.cache/puppeteer` → system Chrome, and
+  **skips gracefully** if `mmdc`/Chrome are absent (the committed SVG is reused → offline builds work).
+- **CRITICAL render constraint — root-level `"htmlLabels": false`.** WeasyPrint cannot draw SVG
+  `<foreignObject>` and runs no JS, so foreignObject labels render blank in the PDF. Forcing
+  native `<text>`/`<tspan>` requires `"htmlLabels": false` at the **root** of the config; the
+  scoped `flowchart.htmlLabels` key alone does NOT take effect. Verify the rendered SVG has zero
+  `<foreignObject>`.
+- **Mermaid 11 gotcha — no `color:` on any `classDef`.** Under htmlLabels:false, a per-class
+  `color:` property makes MULTI-ROW label text (wrapped or `<br/>`) render invisibly on all
+  nodes. Leave label color to the theme default (`primaryTextColor:#1a1a1a`) and distinguish
+  the origin node with a light fill + thick accent border. Also avoid a literal `&` in labels
+  (it double-encodes to `&amp;amp;`) — use "and".
+- **One figure, layered, both editions:** `charts/embed.build_mermaid_html()` emits a `<figure>`
+  with the base64-inlined SVG as an inert `<img>` (an `<img>` runs no SVG script; it gets a
+  `/Figure` + `/Alt` tag in the PDF), a figcaption carrying the `.mmd`'s `accDescr` long
+  description, and the adjacent data table as the tabular alternative. The `.mmd`'s `accTitle`/
+  `accDescr` are single-sourced (they also become the SVG `<title>`/`<desc>`).
+
 ## Figure / OCR notes (gotchas)
 
 - The PDF is fully **scanned** — each page is one raster image, so figures are not separately
@@ -183,8 +219,10 @@ share), **Figure 2-4** (relative stopping power), and **Table 4-2** (tracing vs 
 - **"Figure 5-1" does not exist as an image.** The body text says "Figure 5-1" but the actual
   exhibit is printed as **Table 5-1** (BATF factoring criteria) on pp. 70–71, rendered as an
   accessible data table. Don't go hunting for a 5-1 image.
-- The family tree (Figure 1-1) exists three ways: the cropped image, a Markdown table in
-  `build/01-snsfamily.md`, and the Mermaid source `charts/family-tree.mmd`.
+- The family tree (Figure 1-1) exists four ways: the original cropped scan, a Markdown table in
+  `build/01-snsfamily.md`, the Mermaid source `charts/family-tree.mmd`, and its rendered
+  accessible SVG `charts/static/family-tree.svg` (embedded via `<!--MERMAID family-tree-->` —
+  see "Diagrams" above). All are kept; the scan is never replaced.
 
 ## Status
 
@@ -200,6 +238,44 @@ Highcharts on screen, static vector SVG (Altair/vl-convert) + tagged data table 
 alongside the original scans/tables. Verified: HTML renders 4 interactive charts (4 SVGs)
 with no console errors and `empty_alts=0`; PDF carries the 4 static SVGs as `/Figure`+`/Alt`
 and 4 extra data tables, with the interactive divs excluded from print.
+
+**Embedded diagram (done):** the Figure 1-1 family tree is rendered from `charts/family-tree.mmd`
+(Mermaid) to a PDF-safe, foreignObject-free SVG via the `<!--MERMAID family-tree-->` pipeline
+(`make diagrams` → `render_diagrams.py`), embedded as an inert base64 `<img>` with a long-text
+figcaption description and the data table alongside the kept original scan. Verified: rendered
+SVG has 0 `<foreignObject>` and native `<text>` labels; PDF page 13 shows the diagram with fully
+legible text; the new figure is a `/Figure` with `/Alt` in the tagged tree.
+
+**Original-scan accordions (done):** in the HTML edition every numbered figure's historic raster
+scan is collapsed into a native `<details>`/`<summary>` ("Show the original 1994 scan of Figure
+X-X"), built in `scripts/build_html.py:build_figure()`. The descriptive `<figcaption>` stays
+**visible** (it is the accessible alternative and leads), only the raster image is tucked inside;
+the cover stays plain. Native `<details>` is keyboard-accessible; the disclosure marker is a CSS
+`::before` triangle (use a real `▶`/`▼` glyph or a `\\uXXXX` Python escape — a bare `\25B6` in a
+non-raw triple-quoted string is parsed as a Python **octal** `\25` control char → tofu). WeasyPrint
+renders `<details>` content regardless of state, so the scans **still appear in the tagged PDF**;
+print CSS hides the now-meaningless `<summary>` there. Side fix: `inline_html()` now uses the
+`tables` extension so Figure 1-1's caption (a markdown table inside its blockquote) renders as a
+real `<table>` instead of literal pipes — required so the caption HTML is well-formed and does not
+break the accordion nesting. Verified: 24 accordions, captions visible, collapsed by default, no
+console errors, `empty_alts=0`; PDF still 30 `/Figure`+`/Alt`, scans present on page 13, summary
+toggle absent in print.
+
+**Figure-figure refinements (done):** four follow-ups across `build_figure()` (build_html.py) and
+`embed.py`: (1) every accessible chart/diagram now **names the figure it makes accessible** — chart
+captions lead `<strong>Figure X-X — accessible chart:</strong>`, the diagram `<strong>Figure 1-1 —
+accessible diagram:</strong>`, and the static `<img>` alt cites the figure too (`embed.figure_label()`
+maps `figure-2-2`→"Figure 2-2", `table-4-2`→"Table 4-2"; `DIAGRAM_FIGURE` maps `family-tree`→"Figure
+1-1"). (2) The original-scan `<details>` now comes **before** the `<figcaption>` (collapsed image
+first, descriptive caption follows). (3) **Figure 1-1's caption is now a short prose description of
+the workflow** (added to the blockquote in `build/01-snsfamily.md`); its data table is pulled out of
+the caption by `build_figure()`'s `split_caption_table()`/`TABLE_RE` into a collapsible
+`<details class="data-details">`. (4) **All chart/figure data tables are collapsible** and labeled
+"Show the data table for Figure X-X" (charts via `embed.build_figure_html()`, scan figures via
+`build_figure()`). Verified on screen: 24 scan figures all scan-before-caption (24/24), 5
+`details.data-details` all collapsed by default, 4 interactive SVGs, `empty_alts=0`, no console
+errors; PDF still 30 `/Figure`+`/Alt`, 41 `/Table` (collapsed tables render in print), Marked/Lang
+en/DisplayDocTitle intact.
 
 Likely next tasks:
 - Digitize the production-trend line charts from cited sources, add CSVs, and embed them with

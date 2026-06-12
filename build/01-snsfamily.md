@@ -33,6 +33,8 @@ Raven Arms, the firm that started it all, no longer exists. The plant was seriou
 
 > **Figure 1-1: The Ring of Fire Family Tree — History of the Five Jennings-Related Companies**
 >
+> This family tree traces five Southern California handgun makers back to Raven Arms, founded by George Jennings in 1970. Lorcin, Davis, Bryco, and Sundance each descend from Raven through Jennings-family ties, while Phoenix Arms arose after a November 1991 fire destroyed Raven and took over its tooling. The data table below lists each company's origin firm, founder relationship, successor, and 1992 production.
+>
 > | Origin company | Founder / relation | Became | 1992 production |
 > |---|---|---|---|
 > | Lorcin Engineering | Jim Waldorf, Bruce's high school friend (1989) | Lorcin Engineering | 187,761 guns |
@@ -40,6 +42,8 @@ Raven Arms, the firm that started it all, no longer exists. The plant was seriou
 > | Raven Arms | George Jennings (1970); Raven destroyed by fire, 1991 | Phoenix Arms | 67,824 guns |
 > | Jennings Firearms | George's son Bruce (1978); Jennings replaced by Calwestco, 1985–1990 | Bryco Arms | 204,883 guns |
 > | Sundance Industries | George's nephew (1989) | Sundance Industries | 17,757 guns |
+
+<!--MERMAID family-tree-->
 
 <!--CHART figure-1-1-->
 
