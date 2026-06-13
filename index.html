@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; img-src data:; base-uri 'none'; form-action 'none'">
+<meta name="author" content="Garen J. Wintemute, M.D., M.P.H.">
+<meta name="description" content="Accessible (WCAG 2.1 AA, PDF/UA-1) digital edition of Ring of Fire: The Handgun Makers of Southern California (Garen J. Wintemute, UC Davis, 1994). Available as HTML, PDF, and Markdown.">
+<title>Ring of Fire (1994) — Accessible Digital Edition</title>
+<style>
+  :root{
+    --ink:#1a1a1a;
+    --muted:#4a4540;
+    --bg:#ffffff;
+    --panel:#f6f4f1;
+    --rule:#d8d8d8;
+    --accent:#7a1f1f;
+    --link:#7a1f1f;
+    --link-visited:#5a2a6b;
+    --focus:#0b5fff;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:Georgia,'Times New Roman',serif;
+    line-height:1.6;
+    font-size:clamp(1rem,0.95rem + 0.3vw,1.125rem);
+  }
+  .skip{position:absolute;left:-999px;top:0;background:var(--accent);color:#fff;padding:.6rem 1rem;z-index:10;}
+  .skip:focus{left:0;}
+  .wrap{max-width:46rem;margin:0 auto;padding:clamp(1.5rem,1rem + 3vw,4rem) 1.25rem 5rem;}
+  header{border-bottom:2px solid var(--accent);padding-bottom:1.5rem;margin-bottom:2rem;}
+  .byline{color:var(--muted);margin:0;font-family:Arial,Helvetica,sans-serif;font-size:.95rem;}
+  h1{font-size:clamp(1.9rem,1.4rem + 2.2vw,2.8rem);line-height:1.12;margin:.4rem 0 .5rem;}
+  h2{font-size:1.4rem;margin:2.5rem 0 1rem;border-bottom:1px solid var(--rule);padding-bottom:.25rem;}
+  p{margin:0 0 1rem;}
+  a{color:var(--link);}
+  a:visited{color:var(--link-visited);}
+  a:focus-visible{outline:3px solid var(--focus);outline-offset:2px;}
+  ul.formats{list-style:none;margin:0;padding:0;display:grid;gap:1rem;}
+  ul.formats li{border:1px solid var(--rule);border-radius:8px;background:var(--panel);padding:1.1rem 1.25rem;}
+  ul.formats a.fmt{font-weight:700;font-size:1.1rem;text-decoration:none;}
+  ul.formats a.fmt:hover,ul.formats a.fmt:focus-visible{text-decoration:underline;}
+  ul.formats .desc{display:block;color:var(--muted);font-size:.95rem;margin-top:.3rem;font-family:Arial,Helvetica,sans-serif;}
+  .note{background:var(--panel);border-left:4px solid var(--accent);padding:1rem 1.25rem;border-radius:0 6px 6px 0;}
+  footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--rule);color:var(--muted);font-size:.9rem;font-family:Arial,Helvetica,sans-serif;}
+  footer a{color:var(--link);}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="wrap">
+  <header>
+    <p class="byline">UC Davis Violence Prevention Research Program &middot; 1994</p>
+    <h1>Ring of Fire: The Handgun Makers of Southern California</h1>
+    <p class="byline">Garen J. Wintemute, M.D., M.P.H.</p>
+  </header>
+
+  <main id="main">
+    <p>
+      This is a faithful, accessible digital edition of the 1994 report, rebuilt from a
+      112-page print-locked scan. It conforms to <strong>WCAG&nbsp;2.1 Level&nbsp;AA</strong>;
+      the PDF additionally targets <strong>PDF/UA-1</strong>. Choose the format that suits your
+      device or assistive technology &mdash; the text, tables, figures, and data are identical
+      across all three.
+    </p>
+
+    <h2>Read or download</h2>
+    <ul class="formats">
+      <li>
+        <a class="fmt" href="document/Ring-of-Fire-1994.html">Read online (HTML)</a>
+        <span class="desc">Self-contained accessible web page. Best for screen readers and reflow at any zoom. Interactive charts, sonification, and collapsible original scans.</span>
+      </li>
+      <li>
+        <a class="fmt" href="document/Ring-of-Fire-1994.pdf">Download the PDF (PDF/UA-1)</a>
+        <span class="desc">Tagged, accessible PDF with a structured outline, alt text on every figure, and the original scans retained.</span>
+      </li>
+      <li>
+        <a class="fmt" href="document/Ring-of-Fire-1994.md">Download the Markdown</a>
+        <span class="desc">Plain-text source that renders on GitHub and in any editor; convert with Pandoc to docx, EPUB, and more.</span>
+      </li>
+    </ul>
+
+    <h2>About this edition</h2>
+    <p class="note">
+      Every figure leads with its accessible form &mdash; a descriptive caption, a data table,
+      and an interactive or vector chart that names the figure it makes accessible (for example,
+      &ldquo;Figure&nbsp;1-1 &mdash; accessible diagram&rdquo;). The original 1994 scan sits in a
+      collapsible &ldquo;Show the original 1994 scan&rdquo; accordion so readers can verify the
+      accessible version against the source. <strong>No data, text, or figures were altered,
+      modernized, or invented</strong>; printed-era values are preserved exactly as published.
+    </p>
+
+    <p>
+      Source code, the build pipeline, and release downloads are on
+      <a href="https://github.com/jdhori/ring-of-fire-1994">GitHub</a>.
+    </p>
+  </main>
+
+  <footer>
+    <p>
+      Originally published by the Violence Prevention Research Program, University of California,
+      Davis (1994). This accessible edition reproduces the source faithfully for
+      assistive-technology users; copyright in the underlying text remains with the original
+      author and publisher.
+    </p>
+  </footer>
+</div>
+</body>
+</html>

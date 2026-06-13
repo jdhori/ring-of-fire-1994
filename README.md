@@ -22,6 +22,9 @@ accordions are print-expanded), so nothing is lost.
 
 ## What's here
 
+- **`index.html`** — a small, self-contained accessible landing page that links to all three
+  editions (HTML / PDF / Markdown). It is the entry point when the repo is served via GitHub
+  Pages, and mirrors the report's serif masthead. Strict CSP, single `h1`, skip link, no scripts.
 - **`document/Ring-of-Fire-1994.md`** — clean Markdown of the full report (generated from
   the section files in `build/`). Convert with Pandoc to docx/EPUB/etc.
 - **`document/Ring-of-Fire-1994.html`** — a single self-contained, accessible HTML edition:
